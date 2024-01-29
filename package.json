@@ -1,0 +1,24 @@
+{
+  "name": "gretel",
+  "version": "0.0.0",
+  "description": "UI for botc app",
+  "main": "gretel.js",
+  "scripts": {
+    "watch": "rollup -c rollup.config.js -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "blottn",
+  "type": "module",
+  "license": "ISC",
+  "dependencies": {
+    "browserify": "^17.0.0",
+    "esmify": "^2.1.1",
+    "json-merge-patch": "github:blottn/json-merge-patch",
+    "redom": "^4.0.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3"
+  }
+}
