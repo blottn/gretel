@@ -1,6 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+      <style>
+      body {
+        background: black;
+        color: white;
+        font-family: monospace;
+        font-size: x-large;
+      }
+
+      .tok {
+        margin: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: start;
+      }
+
+      .tok > * {
+        margin: 2px 4px;
+      }
+
+      .tok-core {
+        padding: 0px 6px;
+        background: #333;
+        border-radius: 2px;
+        color: white;
+      }
+
+      .tok-reminder {
+        background: black;
+        border: 1px solid deeppink;
+        border-radius: 2px;
+        padding: 3px;
+        color: deeppink;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .tok-reminder:hover {
+        background: deeppink;
+        border: 1px solid black;
+        border-radius: 2px;
+        padding: 3px;
+        color: black;
+        cursor: default;
+      }
+
+      .tok-reminder:focus {
+        background: deeppink;
+        border: 1px solid black;
+        border-radius: 2px;
+        padding: 3px;
+        color: black;
+        cursor: default;
+      }
+
+      .tok-add {
+        background: black;
+        border: 1px dashed deeppink;
+        color: white;
+      }
+
+      </style>
     </head>
     <body>
       <script type="module" src="dist/bundle.js"></script>

@@ -1,4 +1,4 @@
-import { el, mount } from "redom";
+import { el, mount, list, setAttr, setChildren } from "redom";
 import { v4 as uuidv4 } from "uuid";
 import { generate } from "json-merge-patch";
 
@@ -15,24 +15,37 @@ await new Promise((res, rej) => {
   });
 });
 
-let state = {};
 
 // Changes the state and only sends changes if it diffs our id 
-let mutate = (f, s) => {
-  let prior = JSON.parse(JSON.stringify(s));
-  let post = f(s);
+let mutate = (f) => {
+  let prior = JSON.parse(JSON.stringify(state));
+  let post = f(state);
   let diff = generate(prior[id], post[id]);
   if (Object.keys(diff) == 0)
     return
+
+  pushDiff({[id]: diff});
 };
+
+let state = {};
 ws.addEventListener("message", async (m) => {
   state = JSON.parse(await m.data.text());
-  let old_state = JSON.parse(JSON.stringify(state)); //deep clone
 
+  reconcile();
+  refreshUI();
+});
 
+function reconcile() {
+  let prior = JSON.parse(JSON.stringify(state));
+  tokenPerPlayer();
+  let selfDiff = generate(prior[id], state[id]);
+  if (Object.keys(selfDiff) == 0)
+    return
 
+  pushDiff({[id]: selfDiff});
+}
 
-  console.log('received state update', state);
+function tokenPerPlayer() {
   // ensure tokens in circle for players
   for (let p of Object.keys(state)) {
     if (p in state[id].circle) {
@@ -40,43 +53,29 @@ ws.addEventListener("message", async (m) => {
     }
     state[id].circle[p] = {
       token: {
-        name: 'blank',
+        name: '<unknown>',
       },
       reminders: {},
       notes: {},
     };
   }
-  let selfDiff = generate(old_state[id], state[id]);
-  if (Object.keys(selfDiff) == 0)
-    return
-
-  let diff = {
-    [id]: selfDiff
-  };
-  console.log('push diff after receive');
-  pushDiff(diff);
-});
+}
 
 function pushDiff(diff) {
   if (Object.keys(diff).length == 0)
     return
-  console.log('sending diff');
   ws.send(JSON.stringify(diff));
 }
-
-/*function pushState(updatedState) {
-  let diff = generate(state, updatedState);
-  if (Object.keys(diff).length != 0)
-    ws.send(JSON.stringify(diff));
-}*/
 
 function initGrim() {
   return {
     'bluffs': {},
     'circle': {
       [ id ] : {
-        'token': {'name': 'foobar'},
-        'reminders': {},
+        'token': {'name': 'ravenkeeper'},
+        'reminders': {
+          'imp.dead': {},
+        },
         'notes': {},
       },
     },
@@ -97,40 +96,92 @@ reset.addEventListener("click", () => {
 mount(document.body, reset);
 
 let dom = {};
-
 function refreshUI() {
-  // ensure dom exists for all objects
-  for (let p_id of Object.keys(state)) {
-    if (!(p_id in dom)) {
-      console.log(`init grim dom: ${p_id}`);
-      dom[p_id] = {'grim': {}, 'circle': {}}
-    }
-    dom[p_id]['grim'] = tokenGrim(dom[p_id]?.grim);
-    for (let t_id of Object.keys(state[p_id].circle)) {
-      dom[p_id].circle[t_id] = token(
-        dom[p_id].grim,
-        dom[p_id].circle[t_id],
-        state[p_id].circle[t_id]);
-    }
-  }
-
-  console.log(dom);
+  console.log('ui refresh triggerd');
+//  for (let p_id of Object.keys(state)) {
+//    dom[p_id] = refreshGrim(dom[p_id], state[p_id].circle);
+//  }
+  dom[id] = refreshGrim(dom[id], state[id].circle);
+  mount(document.body, dom[id]);
 }
 
-function tokenGrim(old) {
-  if (old !== undefined) {
-    return old;
+function refreshGrim(old, circle) {
+  let container = old;
+  if (container === undefined) {
+    // List is not quite right but makes reuse and ordering easier
+    container = list("div", CircLi);
   }
-  return el("div.grim");
+  container.update(Object.entries(state[id].circle));
+  return container;
 }
 
-function token(parent, old, state) {
-  let e = old;
-  if (e == undefined) {
-    e = el("p.tok", JSON.stringify(state));
+class CircLi {
+  constructor() {
+    this.el = el("div.tok");
+    this.name = el("p.tok-core");
+    this.tok = el("p.tok-core");
+    this.addButton = el("button.tok-add", "+");
+    this.rems = [];
+    mount(this, this.name);
+    mount(this, this.tok);
+    mount(this, this.addButton);
   }
-  // TODO sometimes update state
 
-  return e;
+  // Bind to some data
+  update([token_id, { token, reminders }]) {
+    this.token_id = token_id;
+
+    this.name.textContent = token_id.substr(0,8);
+    this.tok.textContent = token.name;
+
+    reminders = Object.keys(reminders);
+    this.rems.slice(reminders.length).forEach(r => unmount(this, r))
+    this.rems = this.rems.slice(0, reminders.length);
+
+    reminders.forEach((r, i) => {
+      if (i >= this.rems.length)
+        this.rems[i] = el("input.tok-reminder", {'type': 'text'});
+      setAttr(this.rems[i], {
+        'value': r,
+        'size': r.length,
+      });
+      mount(this, this.rems[i]);
+    });
+
+    // listeners
+    this.rems.forEach((r, i) => {
+      r.onclick = () => {
+        console.log(`clicked ${token_id}`);
+      }
+      r.onblur = function() {
+        console.log(`blurred + ${r.value}`);
+/*        mutate((s) => {
+          s[id].circle[this.token_id].reminders[reminders[i]]
+          return s;
+        });*/
+      }
+      r.oninput = () => { // auto resize
+        setAttr(r, {'size': Math.max(
+          1,
+          Math.min(r.value.length, 20)
+        )});
+      };
+    });
+
+    // Set handlers
+    this.addButton.onclick = () => {
+      mutate((s) => {
+        let t = Object.keys(s[id].circle[this.token_id].reminders).length;
+        s[id].circle[this.token_id].reminders[t] = {};
+        return s;
+      });
+    };
+
+    setChildren(this, [this.name, 
+      this.tok,
+      this.rems,
+      this.addButton].flat())
+  }
 }
+
 
