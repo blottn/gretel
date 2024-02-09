@@ -3,17 +3,19 @@ import { v4 as uuidv4 } from "uuid";
 import { generate } from "json-merge-patch";
 
 let id = uuidv4();
-console.log(`Your id is: ${id}`)
+console.log(id);
 
 // TODO use location to decide room
-const ws = new WebSocket("ws://localhost:3141/hansel/test")
+const ws_out_url = "ws://localhost:3141/hansel/test";
+const ws_in_url = `${ws_out_url}/trail`
+const ws_in = new WebSocket(ws_in_url);
+const ws_out = new WebSocket(ws_out_url);
 
-await new Promise((res, rej) => {
-  ws.addEventListener("open", () => {
-    console.log('connected to ws');
-    res()
+(await Promise.all([ws_in, ws_out].map(ws => new Promise((r) => {
+  ws.addEventListener('open', () => {
+    r(`connected to ${ws.url}`);
   });
-});
+})))).forEach(m => console.log(m));
 
 // Changes the state and only sends changes if it diffs our id 
 let mutate = (f) => {
@@ -26,8 +28,12 @@ let mutate = (f) => {
 };
 
 let state = {};
-ws.addEventListener("message", async (m) => {
+ws_in.addEventListener("message", async (m) => {
   state = JSON.parse(await m.data.text());
+  console.log(state);
+  if (state === null) {
+    return;
+  }
   reconcile();
   refreshUI();
 });
@@ -61,7 +67,7 @@ function tokenPerPlayer() {
 function pushDiff(diff) {
   if (Object.keys(diff).length == 0)
     return
-  ws.send(JSON.stringify(diff));
+  ws_out.send(JSON.stringify(diff));
 }
 
 function initGrim() {
@@ -79,37 +85,38 @@ function initGrim() {
   };
 }
 
-
-
 pushDiff({[id]: initGrim()});
 
 const reset = el("button", "reset");
-
-reset.addEventListener("click", () => {
-  console.log('resetting state');
-  ws.send(JSON.stringify(null));
-})
-
 mount(document.body, reset);
+reset.addEventListener("click", () => {
+  ws_out.send(JSON.stringify(null));
+})
 
 let dom = {};
 function refreshUI() {
-  console.log('ui refresh triggerd');
   for (let p_id of Object.keys(state)) {
-    dom[p_id] = refreshGrim(dom[p_id], state[p_id].circle);
+    dom[p_id] = refreshGrim(p_id, dom[p_id], state[p_id].circle);
   }
-  dom[id] = refreshGrim(dom[id], state[id].circle);
-  mount(document.body, dom[id]);
-
+  setChildren(document.body.querySelector('#grims'),
+    Object.entries(dom)
+      .sort(([item_id, a], b) => {
+        if (item_id === id) {
+          return -1;
+        }
+        return 1;
+      })
+      .map(([_, x]) => x)
+  );
 }
 
-function refreshGrim(old, circle) {
+function refreshGrim(p_id, old, circle) {
   let container = old;
   if (container === undefined) {
     // List is not quite right but makes reuse and ordering easier
-    container = list("div", CircLi, null, id);
+    container = list(`div${p_id === id ? '.self' : ''}`, CircLi, null, p_id);
   }
-  container.update(Object.entries(state[id].circle));
+  container.update(Object.entries(state[p_id].circle));
   return container;
 }
 
@@ -132,8 +139,11 @@ class CircLi {
 
     this.name.textContent = token_id.substr(0,8);
     this.tok.value = token.name;
-    this.tok.onclick = () => {
-
+    this.tok.onblur = () => {
+      mutate(s => {
+        s[this.grim_id].circle[this.token_id].token.name = this.tok.value;
+        return s;
+      });
     };
 
     this.rems.slice(Object.keys(reminders).length).forEach(r => unmount(this, r))
@@ -155,9 +165,9 @@ class CircLi {
       r.onblur = () => {
         mutate((s) => {
           s[this.grim_id].circle[this.token_id].reminders[i] = r.value;
-          if (!(r.value.length >= 0) && !((/\s+/.exec(r.value)[0].length == r.value.length))) {
-            delete s[this.grim_id].circle[this.token_id].reminders[i];
-          }
+          if (r.value.length > 0 || (/\s+/.exec(r.value)?.[0].length == r.value.length))
+            return s
+          delete s[this.grim_id].circle[this.token_id].reminders[i];
           return s;
         });
       }
@@ -171,6 +181,7 @@ class CircLi {
 
     // Set handlers
     this.addButton.onclick = () => {
+      console.log(`adding: ${this.grim_id}`);
       mutate((s) => {
         let t = Object.keys(s[this.grim_id].circle[this.token_id].reminders).length;
         s[this.grim_id].circle[this.token_id].reminders[t] = 'empty';
