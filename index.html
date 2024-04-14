@@ -74,16 +74,45 @@
         border: 1px solid #00ffbf;
       }
 
-      .st-name {
+      .text-highlight {
         color: deeppink;
       }
+
+      .text-annotate {
+        color: cyan;
+      }
+      
+
+      #st-container {
+        border-bottom: dashed 1px grey;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      #st-become {
+        font-size: 18px;
+        font-family: monospace;
+        background: 0;
+        color: deeppink;
+        border: 2px dotted deeppink;
+        border-radius: 4px;
+        padding: 4px 8px;
+      }
+
+      #st-become:hover {
+        border-style: solid;
+      }
+
+
+
       </style>
     </head>
     <body>
       <div id="grims">
       </div>
       <div id="st-container">
-        <p>ST is: <span id="st-who" class="st-name">Loading...</span></p>
+        <p>This game's <span class="text-annotate">Story Teller</span> is: <span id="st-who" class="text-highlight">Loading...</span></p>
         <button id="st-become">Become st</button>
       </div>
       <script type="module" src="dist/bundle.js"></script>
