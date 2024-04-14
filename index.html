@@ -73,11 +73,19 @@
         border-radius: 6px;
         border: 1px solid #00ffbf;
       }
+
+      .st-name {
+        color: deeppink;
+      }
       </style>
     </head>
     <body>
-      <script type="module" src="dist/bundle.js"></script>
       <div id="grims">
       </div>
+      <div id="st-container">
+        <p>ST is: <span id="st-who" class="st-name">Loading...</span></p>
+        <button id="st-become">Become st</button>
+      </div>
+      <script type="module" src="dist/bundle.js"></script>
     </body>
 </html>

@@ -4,7 +4,7 @@
   "description": "UI for botc app",
   "main": "gretel.js",
   "scripts": {
-    "watch": "rollup -c rollup.config.js -w",
+    "watch": "rollup -c rollup.config.js -w"
   },
   "author": "blottn",
   "type": "module",

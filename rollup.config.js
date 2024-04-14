@@ -7,6 +7,9 @@ export default {
     file: 'dist/bundle.js',
     format: 'es'
   },
-  plugins: [nodeResolve(), commonjs()]
+  plugins: [
+    nodeResolve(),
+    commonjs(),
+  ]
 };
 
