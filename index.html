@@ -84,13 +84,13 @@
       
 
       #st-container {
-        border-bottom: dashed 1px grey;
+        border-bottom: dashed 1px #333;
         display: flex;
         align-items: center;
         justify-content: space-between;
       }
 
-      #st-become {
+      button {
         font-size: 18px;
         font-family: monospace;
         background: 0;
@@ -100,20 +100,49 @@
         padding: 4px 8px;
       }
 
-      #st-become:hover {
+      button:hover {
         border-style: solid;
       }
 
+      #st-controls {
+        display: flex;
+        padding: 16px 0px;
+        align-items: center;
+        justify-content: start;
+        border-bottom: 1px dashed #333;
+        gap: 16px;
+      }
 
+      #st-controls > p {
+        padding-right: 16px;
+        border-right: 1px solid white;
+      }
 
+      .gone {
+        display: none;
+      }
+
+      #st-controls.gone {
+        display: none;
+      }
       </style>
     </head>
     <body>
-      <div id="grims">
+      <div id="play-space">
+        <div id="grims">
+        </div>
+        <div id="player-controls">
+        </div>
       </div>
       <div id="st-container">
         <p>This game's <span class="text-annotate">Story Teller</span> is: <span id="st-who" class="text-highlight">Loading...</span></p>
         <button id="st-become">Become st</button>
+      </div>
+      <div id="st-controls" class="gone">
+        <p>CONTROLS</p>
+        <button id="st-add-player">Add Player</button>
+        <button id="st-script">Script Select</button>
+        <button id="st-release">Unlock ST</button>
       </div>
       <script type="module" src="dist/bundle.js"></script>
     </body>

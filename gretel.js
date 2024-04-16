@@ -25,7 +25,6 @@ addR((s) => {
   return getBase();
 });
 
-
 // Manually reconcile in case room has never been used
 reconcile();
 refresh();

@@ -12,8 +12,12 @@ export const refresh = () => {
   refreshControls();
 };
 
-export const refreshControls = () => {
+const st_ctrls = document.body.querySelector("#st-controls");
 
+export const refreshControls = () => {
+  st_ctrls.classList.remove("gone");
+  if (getState()['meta']['st'] !== id)
+    st_ctrls.classList.add("gone");
 };
 
 
