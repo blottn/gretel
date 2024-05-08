@@ -19,6 +19,6 @@ export async function setupWS() {
 export function pushDiff(diff) {
   // This helps prevent thrashing
   if (Object.keys(diff).length == 0)
-    return console.log("skipped no diff push");
+    return console.log("skipped, no diff");
   ws_out.send(JSON.stringify(diff));
 }
