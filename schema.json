@@ -1,0 +1,27 @@
+{
+  "meta": {
+  },
+  "ownership": {
+    "[grim_id]": "[player_id]"
+  },
+  "seats": {
+    "comment": "controlled by the ST, but claimed by players",
+    "[index]": {
+      "id": "[seat_id]",
+      "owner": "[player_id]"
+    }
+  },
+  "grim": {
+    "comment": "one grim per person in game, not necessarily player",
+    "c2": "on join create a new grim for yourself",
+    "[player_id]": {
+      "owner": "[player_id]",
+      "[seat_id]": {
+        "token": "[token_details]",
+        "reminders": {
+          "[desc]": true
+        }
+      }
+    }
+  }
+}
