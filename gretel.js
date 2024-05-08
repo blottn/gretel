@@ -11,11 +11,6 @@ let {ws_in, ws_out} = await setupWS();
 // This is technically in the wrong order since the initial setup should trigger reconcile and refresh anyways
 let s = await setup(ws_out, ws_in);
 
-ws_in.addEventListener("message", async (m) => {
-  await rcvUpdate(m)
-  refresh()
-})
-
 // initialiser for resets
 addR((s) => {
   if (s !== null &&
@@ -24,6 +19,11 @@ addR((s) => {
     return s
   return getBase();
 });
+
+ws_in.addEventListener("message", async (m) => {
+  await rcvUpdate(m)
+  refresh();
+})
 
 // Manually reconcile in case room has never been used
 reconcile();
