@@ -43,19 +43,22 @@ export const refreshST = () => {
 }
 
 const mount_point = document.body.querySelector("#grims");
-
+const parser = new DOMParser();
 export const refreshGrims = () => {
   let {meta, grims} = getState();
-  setChildren(mount_point,[]);
-  /*  [el('div', Object.entries(grims).map(g => {
-      console.log(g);
-      const remove = el('button', "REMOVE");
-      remove.addEventListener('click', () => {
-        console.log('removed');
-      });
-      return el('div', [el('p', JSON.stringify(g)), remove]);
-    }))],
-  ); */
+  setChildren(mount_point,
+    Object.entries(grims)
+      .map((g) => render_grim(...g))
+  );
+}
+
+export const render_grim = (p_id, grim) => {
+  const { seats } = getState();
+  return el('div',
+    Object.entries(grim).map(([seat_id, {token, reminders}]) => {
+      return el('div', el('p', token), el('p', seats[seat_id].owner), el('p', JSON.stringify(reminders)));
+    })
+  );
 }
 
 
