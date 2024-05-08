@@ -24,11 +24,13 @@ export const remove_seat = (idx) => ({seats, ...rest}) => {
 
 // Grims
 export const create_grim = ({grims, seats, ...rest}) => {
+  if (id in grims)
+    return {grims, seats, ...rest};
   return {grims: {
     [id]: Object.keys(seats).map(seat_idx => [seat_idx, {
       token: 'unset',
       reminders: {},
     }]).reduce(tuple_to_obj, {}), ...grims},
-    ...seats, ...rest
+    seats, ...rest
   };
 }

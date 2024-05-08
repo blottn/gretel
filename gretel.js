@@ -2,6 +2,7 @@ import { el, mount, unmount, list, setAttr, setChildren } from "redom";
 import { v4 as uuidv4 } from "uuid";
 import { generate } from "json-merge-patch";
 import { id } from './id.js';
+import { create_grim } from './mutators.js';
 import { setupWS } from './ws.js';
 import { getBase, mutate, getState, setup, rcvUpdate, addR, reconcile } from './state.js';
 import { refresh } from './ui.js';
@@ -18,6 +19,24 @@ addR((s) => {
       Object.keys(s).length !== 0)
     return s
   return getBase();
+});
+
+// Grim adder
+addR(create_grim);
+
+// Seat remover
+addR(({grims, seats, ...rest}) => {
+  Object.keys(grims[id])
+    .filter(s => !(s in seats))
+    .forEach(s => delete grims[id][s]);
+  return {grims, seats, ...rest};
+})
+
+addR(({grims, seats, ...rest}) => {
+  Object.keys(seats)
+    .filter(s => !(s in grims[id]))
+    .forEach(s => grims[id][s] = {token: 'unset', reminders: {}});
+  return {grims, seats, ...rest};
 });
 
 ws_in.addEventListener("message", async (m) => {
