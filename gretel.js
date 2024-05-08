@@ -21,7 +21,7 @@ addR((s) => {
 });
 
 ws_in.addEventListener("message", async (m) => {
-  await rcvUpdate(m)
+  await rcvUpdate(m); // Has a reconcile inside
   refresh();
 })
 
