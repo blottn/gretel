@@ -1,14 +1,15 @@
-import { generate } from "json-merge-patch";
+import { generate } from 'json-merge-patch';
 import { id } from './id.js';
 import { pushDiff } from './ws.js';
 import { refresh } from './ui.js';
 
 export const getBase = () => {
   return {
-    'grims': {},
     'meta': {
       'alias': {}
     },
+    'seats': {},
+    'grims': {},
   }
 };
 

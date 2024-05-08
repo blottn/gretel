@@ -1,4 +1,6 @@
 import { el, mount, unmount, list, setAttr, setChildren } from "redom";
+import { v4 as uuidv4 } from 'uuid';
+
 import { id } from './id.js';
 import { mutate, getState } from './state.js';
 
@@ -11,6 +13,16 @@ export const refresh = () => {
   refreshST();
   refreshControls();
 };
+
+const add_seat = document.body.querySelector("#st-add-player");
+add_seat.addEventListener("click", () => {
+  mutate(({seats, ...rest}) => {
+    seats{Object.keys(seats).length} = {
+      "id": uuidv4()
+    }
+    return {seats, ...rest};
+  });
+});
 
 const st_ctrls = document.body.querySelector("#st-controls");
 
@@ -43,8 +55,13 @@ export const refreshGrims = () => {
   console.log('grims refresh');
   console.log(grims);
   setChildren(mount_point,
-    [el('div', Object.entries(grims ?? {'a': 'foo'}).map(([p_id, a]) => {
-      return el('p', JSON.stringify(a));
+    [el('div', Object.entries(grims).map(g => {
+      console.log(g);
+      const remove = el('button', "REMOVE");
+      remove.addEventListener('click', () => {
+        console.log('removed');
+      });
+      return el('div', [el('p', JSON.stringify(g)), remove]);
     }))],
   );
 }
