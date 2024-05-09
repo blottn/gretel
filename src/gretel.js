@@ -6,7 +6,7 @@ import { start_liveness, liveness_adder, dead_remover } from './liveness.js';
 import { create_grim } from './mutators.js';
 import { setupWS } from './ws.js';
 import { getBase, mutate, getState, setup, rcvUpdate, addR, reconcile } from './state.js';
-import { refresh } from './ui.js';
+import { refresh } from './ui/ui.js';
 
 let {ws_in, ws_out} = await setupWS();
 

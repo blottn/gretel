@@ -1,7 +1,7 @@
 import { generate } from 'json-merge-patch';
 import { id } from './id.js';
 import { pushDiff } from './ws.js';
-import { refresh } from './ui.js';
+import { refresh } from './ui/ui.js';
 
 export const getBase = () => {
   return {
