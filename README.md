@@ -1,3 +1,9 @@
 # TODO
-- Let users take control of a seat
-- Define available tokens to fill in on available seats defined by ST
+- Script upload
+- Token select
+- Reminder token setting
+
+- Allow seat kicking
+- Add seat removal
+
+- Add toasts for warning
