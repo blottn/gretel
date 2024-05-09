@@ -57,7 +57,7 @@ button:hover {
   border-style: solid;
 }
 
-.st-controls {
+.controls {
   display: flex;
   padding: 16px 0px;
   align-items: center;
@@ -66,9 +66,14 @@ button:hover {
   gap: 16px;
 }
 
-#st-controls > p {
+.controls > p {
   padding-right: 16px;
   border-right: 1px solid white;
+}
+
+.st-controls {
+  display: flex;
+  flex-direction: row;
 }
 
 
@@ -106,7 +111,7 @@ button:hover {
 
 .circle {
   display: flex;
-  flex-wrap: none;
+  flex-wrap: wrap;
   gap: 8px;
   justify-content: space-evenly;
 }

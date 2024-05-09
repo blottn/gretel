@@ -16,7 +16,7 @@ export const refreshST = () => {
 }
 
 // ST controls
-const st_ctrls = document.body.querySelector("#st-controls");
+const st_ctrls = document.body.querySelector(".st-controls");
 
 export const refreshControls = () => {
   st_ctrls.classList.remove("gone");
