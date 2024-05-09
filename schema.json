@@ -1,5 +1,6 @@
 {
   "meta": {
+    "script": "[script json]"
   },
   "seats": {
     "comment": "controlled by the ST, but claimed by players",
