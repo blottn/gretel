@@ -5,6 +5,7 @@ body {
   font-size: x-large;
   height: 100%;
   margin: 0;
+  padding: 0px 16px;
 }
 
 html {
@@ -109,10 +110,12 @@ button:hover {
 }
 
 .seat {
-  background: #333;
+  background: #17614b;
+  padding: 8px;
+  border-radius: 8px 8px 8px 8px;
 }
 
-.seat.undefined {
+.seat.unclaimed {
   background: #9005;
 }
 

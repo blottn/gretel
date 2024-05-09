@@ -6,6 +6,7 @@ import { refresh } from './ui/ui.js';
 export const getBase = () => {
   return {
     'meta': {
+      'st': 'unset',
     },
     'alias': {},
     'liveness': {},

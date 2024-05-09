@@ -1,8 +1,9 @@
 import { getState, mutate } from './state.js';
 import { id } from './id.js';
 
-const liveness_interval_ms = 15000;
-const max_silence_ms = 60000;
+const liveness_interval_ms = 2000;
+const max_silence_ms = 10000;
+
 const livepinger = () => {
   mutate(({liveness, ...rest}) => {
     liveness[id] = Date.now();

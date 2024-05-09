@@ -1,4 +1,4 @@
-import { mutate, getState } from '../state.js';
+import { mutate, getState, get_player_name } from '../state.js';
 import { id } from '../id.js';
 import * as mutators from '../mutators.js';
 
@@ -11,7 +11,7 @@ st_become.onclick = () => {
 
 export const refreshST = () => {
   let {meta} = getState();
-  st_who.innerText = meta.st ?? 'unselected';
+  st_who.innerText = get_player_name(meta.st) ?? 'unselected';
   refreshControls();
 }
 

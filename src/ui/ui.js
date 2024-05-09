@@ -14,6 +14,17 @@ export const refresh = () => {
 
   refreshGrims();
   refreshST();
+  refreshTitle();
 };
 
+const title = document.querySelector('title');
+const refreshTitle = () => {
+  const { alias } = getState();
+  let title_text = 'Gretel';
+  if (alias[id] !== undefined && alias[id] !== '') {
+    title_text = `Gretel - ${alias[id]}`;
+  }
+
+  title.innerHTML = title_text;
+}
 
