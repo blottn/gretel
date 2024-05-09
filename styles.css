@@ -1,0 +1,123 @@
+
+body {
+  background: black;
+  color: white;
+  font-family: monospace;
+  font-size: x-large;
+  height: 100%;
+  margin: 0;
+}
+
+html {
+  height: 100%;
+  margin: 0;
+}
+
+#grims {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 8px 0px;
+}
+
+#grims > div {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  border: none;
+  padding: 8px;
+}
+
+.text-highlight {
+  color: deeppink;
+}
+
+.text-annotate {
+  color: cyan;
+}
+
+#st-container {
+  border-bottom: dashed 1px #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+button {
+  font-size: 18px;
+  font-family: monospace;
+  background: 0;
+  color: deeppink;
+  border: 2px dotted deeppink;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+button:hover {
+  border-style: solid;
+}
+
+.st-controls {
+  display: flex;
+  padding: 16px 0px;
+  align-items: center;
+  justify-content: start;
+  border-bottom: 1px dashed #333;
+  gap: 16px;
+}
+
+#st-controls > p {
+  padding-right: 16px;
+  border-right: 1px solid white;
+}
+
+
+#play-space {
+  position: relative;
+}
+
+#modals {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.token {
+  border-radius: 50%;
+  padding: 16px;
+  border: 1px dashed #11e;
+  background: #11e4;
+  width: 50px;
+  height: 50px;
+}
+
+.token:hover {
+  border-style: solid;
+}
+
+.seat {
+  background: #333;
+}
+
+.seat.undefined {
+  background: #9005;
+}
+
+.circle {
+  display: flex;
+  flex-wrap: none;
+  gap: 8px;
+  justify-content: space-evenly;
+}
+
+.circle > * {
+  display: flex;
+  flex-wrap: none;
+  align-items: center;
+  flex-direction: column;
+}
+
+.gone {
+  display: none;
+}
