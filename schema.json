@@ -2,6 +2,9 @@
   "meta": {
     "script": "[script json]"
   },
+  "liveness": {
+    "[player_id]": "[time]"
+  },
   "seats": {
     "comment": "controlled by the ST, but claimed by players",
     "[index]": {
