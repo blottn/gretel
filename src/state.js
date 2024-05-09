@@ -6,8 +6,8 @@ import { refresh } from './ui/ui.js';
 export const getBase = () => {
   return {
     'meta': {
-      'alias': {}
     },
+    'alias': {},
     'liveness': {},
     'seats': {},
     'grims': {},
@@ -60,5 +60,13 @@ export function addR(r) {
 
 export const reconcile = () => {
   mutate((s) => reconcilers.reduce((acc, f) => f(acc), s));  
+}
+
+export const get_player_name = (player_id) => {
+  const { alias } = getState();
+  if (player_id in alias) {
+    return alias[player_id];
+  }
+  return player_id.substring(0, 16);
 }
 

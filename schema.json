@@ -2,6 +2,9 @@
   "meta": {
     "script": "[script json]"
   },
+  "alias": {
+    "[player_id]": "[name]"
+  },
   "liveness": {
     "[player_id]": "[time]"
   },

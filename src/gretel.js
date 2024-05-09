@@ -7,6 +7,7 @@ import { create_grim } from './mutators.js';
 import { setupWS } from './ws.js';
 import { getBase, mutate, getState, setup, rcvUpdate, addR, reconcile } from './state.js';
 import { refresh } from './ui/ui.js';
+import { set_player_name } from './ui/player.js';
 
 let {ws_in, ws_out} = await setupWS();
 
@@ -21,6 +22,9 @@ addR((s) => {
     return s
   return getBase();
 });
+
+// Add alias
+addR(set_player_name);
 
 // Grim adder
 addR(create_grim);
