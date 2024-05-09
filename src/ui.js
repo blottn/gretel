@@ -56,7 +56,7 @@ export const render_grim = (p_id, grim) => {
   const { seats } = getState();
   return el('div',
     Object.entries(grim).map(([seat_id, {token, reminders}]) => {
-      return el('div', el('p', token), el('p', seats[seat_id].owner), el('p', JSON.stringify(reminders)));
+      return el('div', el('button', token, {class:'token'}), el('p', seats[seat_id].owner), el('p', JSON.stringify(reminders)));
     })
   );
 }
