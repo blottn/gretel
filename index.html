@@ -79,12 +79,9 @@
       #grims > div {
         display: flex;
         flex-wrap: wrap;
-        border: 1px solid green;
+        flex-direction: column;
+        border: none;
         padding: 8px;
-      }
-
-      #grims > div > div {
-        border: 1px dashed cyan;
       }
 
       .self {
@@ -175,6 +172,20 @@
 
       .seat.undefined {
         background: #9005;
+      }
+
+      .circle {
+        display: flex;
+        flex-wrap: none;
+        gap: 8px;
+        justify-content: space-evenly;
+      }
+
+      .circle > * {
+        display: flex;
+        flex-wrap: none;
+        align-items: center;
+        flex-direction: column;
       }
 
       </style>
