@@ -8,6 +8,7 @@ export const getBase = () => {
     'meta': {
       'alias': {}
     },
+    'liveness': {},
     'seats': {},
     'grims': {},
   }

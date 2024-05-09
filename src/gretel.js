@@ -2,6 +2,7 @@ import { el, mount, unmount, list, setAttr, setChildren } from "redom";
 import { v4 as uuidv4 } from "uuid";
 import { generate } from "json-merge-patch";
 import { id } from './id.js';
+import { start_liveness, liveness_adder, dead_remover } from './liveness.js';
 import { create_grim } from './mutators.js';
 import { setupWS } from './ws.js';
 import { getBase, mutate, getState, setup, rcvUpdate, addR, reconcile } from './state.js';
@@ -23,6 +24,10 @@ addR((s) => {
 
 // Grim adder
 addR(create_grim);
+
+// Liveness
+addR(dead_remover);
+addR(liveness_adder);
 
 // Seat remover
 addR(({grims, seats, ...rest}) => {
@@ -47,3 +52,6 @@ ws_in.addEventListener("message", async (m) => {
 // Manually reconcile in case room has never been used
 reconcile();
 refresh();
+
+start_liveness();
+
