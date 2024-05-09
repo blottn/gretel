@@ -7,6 +7,13 @@
         color: white;
         font-family: monospace;
         font-size: x-large;
+        height: 100%;
+        margin: 0;
+      }
+
+      html {
+        height: 100%;
+        margin: 0;
       }
 
       .tok {
@@ -137,6 +144,17 @@
       #st-controls.gone {
         display: none;
       }
+
+      #play-space {
+        position: relative;
+        height: 100%;
+
+      #modals {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+      }
       </style>
     </head>
     <body>
@@ -151,15 +169,17 @@
         <button id="st-release">Unlock ST</button>
       </div>
       <div id="play-space">
-        <div id="grims">
+        <div id="modals">
+          <div id="token-select">
+          </div>
+          <div id="script-select" class="gone">
+          </div>
+          <div id="reminder-select" class="gone">
+          </div>
+        </div>
+       <div id="grims">
         </div>
         <div id="player-controls">
-        </div>
-      </div>
-      <div id="modals">
-        <div id="token-select">
-        </div>
-        <div id="script-select">
         </div>
       </div>
       <script type="module" src="dist/bundle.js"></script>
