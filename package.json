@@ -10,6 +10,8 @@
   "type": "module",
   "license": "ISC",
   "dependencies": {
+    "@rollup/plugin-json": "^6.1.0",
+    "ajv": "^8.13.0",
     "browserify": "^17.0.0",
     "esmify": "^2.1.1",
     "json-merge-patch": "github:blottn/json-merge-patch",

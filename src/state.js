@@ -3,10 +3,13 @@ import { id } from './id.js';
 import { pushDiff } from './ws.js';
 import { refresh } from './ui/ui.js';
 
+import { tb } from './scripts/tb.js';
+
 export const getBase = () => {
   return {
     'meta': {
       'st': 'unset',
+ //     'script': tb 
     },
     'alias': {},
     'liveness': {},

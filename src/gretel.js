@@ -1,6 +1,6 @@
-import { el, mount, unmount, list, setAttr, setChildren } from "redom";
-import { v4 as uuidv4 } from "uuid";
-import { apply, generate } from "json-merge-patch";
+import { el, mount, unmount, list, setAttr, setChildren } from 'redom';
+import { v4 as uuidv4 } from 'uuid';
+import { apply, generate } from 'json-merge-patch';
 import { id } from './id.js';
 import { start_liveness, liveness_adder, dead_remover } from './liveness.js';
 import { create_grim } from './mutators.js';
