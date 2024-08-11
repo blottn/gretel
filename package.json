@@ -14,7 +14,7 @@
     "ajv": "^8.13.0",
     "browserify": "^17.0.0",
     "esmify": "^2.1.1",
-    "json-merge-patch": "github:blottn/json-merge-patch",
+    "json-patcher": "^1.7.0",
     "redom": "^4.0.0",
     "uuid": "^9.0.1"
   },

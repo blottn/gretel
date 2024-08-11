@@ -1,11 +1,11 @@
 import { el, mount, unmount, list, setAttr, setChildren } from 'redom';
 import { v4 as uuidv4 } from 'uuid';
-import { apply, generate } from 'json-merge-patch';
+import { apply, diff } from 'json-patcher';
 import { id } from './id.js';
 import { start_liveness, liveness_adder, dead_remover } from './liveness.js';
 import { create_grim } from './mutators.js';
 import { setupWS } from './ws.js';
-import { getBase, mutate, getState, setup, rcvUpdate, addR, reconcile } from './state.js';
+import { withBase, mutate, getState, setup, rcvUpdate, addR, reconcile } from './state.js';
 import { refresh } from './ui/ui.js';
 import { set_player_name } from './ui/player.js';
 
@@ -16,7 +16,7 @@ let s = await setup(ws_out, ws_in);
 
 // initialiser for resets
 addR((s) => {
-  return apply(getBase(), s);
+  return withBase(s)
 });
 
 // Add alias

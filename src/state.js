@@ -1,4 +1,4 @@
-import { generate } from 'json-merge-patch';
+import { diff } from 'json-patcher';
 import { id } from './id.js';
 import { pushDiff } from './ws.js';
 import { refresh } from './ui/ui.js';
@@ -9,7 +9,6 @@ export const getBase = () => {
   return {
     'meta': {
       'st': 'unset',
- //     'script': tb 
     },
     'alias': {},
     'liveness': {},
@@ -18,6 +17,14 @@ export const getBase = () => {
   }
 };
 
+// Ensures at minimum the base state keys exist
+export const withBase = (s) => {
+  Object.entries(getBase())
+    .filter(([k]) => !(k in s))
+    .forEach(([k, v]) => s[k] = v)
+  return s;
+}
+
 // Singleton instance of the state
 let state = getBase();
 
@@ -25,7 +32,7 @@ export function mutate(f) {
   let old_state = JSON.parse(JSON.stringify(state));
   let new_state = f(state);
   pushDiff(
-    generate(
+    diff(
       old_state,
       new_state
     )
